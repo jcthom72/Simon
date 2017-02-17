@@ -1,18 +1,18 @@
 package csci4020.shawnbickel_judsonthomas.assignment2.simon;
 
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.View;
 
-public class Simon extends AppCompatActivity {
+public class SimonVersion3 extends AppCompatActivity {
 
     private PlaySimon playSimonGame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.simon_version_3);
 
         // Initialize Game when user pushes the start button
         findViewById(R.id.play_button).setOnClickListener(new InitializeGame());

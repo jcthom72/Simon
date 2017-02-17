@@ -47,7 +47,8 @@
                     android:id="@+id/radioButton1"
                     android:layout_weight="1"
                     android:textColor="#000000"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:checked="true" />
 
                 <RadioButton
                     android:text="Version 2"
