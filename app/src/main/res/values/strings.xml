@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Simon</string>
-    <string name="GameDescription">Game Versions: \nVersion 1 -- "Simon Says" -- normal version\nVersion 2 -- Player(s) add 1 to the pattern each turn\nVersion 3 -- Two or more players choose their own color</string>
+    <string name="GameDescription">Game Versions: \n\u2022 Version 1 -- "Simon Says" -- normal version\n\u2022 Version 2 -- Player(s) add 1 to the pattern each turn\n\u2022 Version 3 -- Two or more players choose their own color</string>
 </resources>

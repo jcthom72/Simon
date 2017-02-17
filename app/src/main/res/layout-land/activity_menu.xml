@@ -15,7 +15,8 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,44 +29,44 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/textView"
                 android:textColor="#000000"
-                android:textSize="12sp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/RadioGroupVersions"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:text="Version 1"
-                    android:layout_width="wrap_content"
+                <RadioGroup
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/radioButton1"
-                    android:layout_weight="1"
-                    android:textColor="#000000"
-                    android:textSize="14sp" />
+                    android:id="@+id/RadioGroupVersions"
+                    android:orientation="horizontal">
 
-                <RadioButton
-                    android:text="Version 2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/radioButton2"
-                    android:layout_weight="1"
-                    android:textSize="14sp" />
+                    <RadioButton
+                        android:text="Version 1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/radioButton1"
+                        android:layout_weight="1"
+                        android:textColor="#000000"
+                        android:textSize="18sp" />
 
-                <RadioButton
-                    android:text="Version 3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/radioButton3"
-                    android:textSize="14sp"
-                    android:layout_weight="1" />
+                    <RadioButton
+                        android:text="Version 2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/radioButton2"
+                        android:layout_weight="1"
+                        android:textSize="18sp" />
 
-            </RadioGroup>
+                    <RadioButton
+                        android:text="Version 3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/radioButton3"
+                        android:textSize="18sp"
+                        android:layout_weight="1" />
+
+                </RadioGroup>
         </RelativeLayout>
 
         <LinearLayout
@@ -90,7 +91,7 @@
                     android:textSize="18sp" />
 
                 <Button
-                    android:text="About"
+                    android:text="About Game"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/About_button"
@@ -109,10 +110,11 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 app:srcCompat="@drawable/simon_image"
                 android:id="@+id/imageView"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:layout_weight="1.12" />
         </LinearLayout>
 
     </LinearLayout>
