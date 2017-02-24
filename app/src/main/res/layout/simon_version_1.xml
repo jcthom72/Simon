@@ -29,7 +29,7 @@
             android:id="@+id/pause_button"
             android:textColor="#ffffff"
             android:background="#000000"
-            android:textSize="12sp" />
+            android:textSize="18sp" />
 
         <Button
             android:text="Play"
@@ -45,7 +45,7 @@
             android:id="@+id/play_button"
             android:textColor="#ffffff"
             android:background="#000000"
-            android:textSize="12sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:text="SIMON"

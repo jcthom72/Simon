@@ -10,113 +10,125 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="csci4020.shawnbickel_judsonthomas.assignment2.simon.MenuActivity"
-    android:background="#F5F5DC">
+    android:background="#0047AB">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <TextView
+                android:text="Simon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:id="@+id/SimonTextView1"
+                android:textAllCaps="true"
+                android:textColor="#ffffff"
+                android:textSize="30sp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="cursive" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
 
             <TextView
                 android:text="@string/GameDescription"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView"
-                android:textColor="#000000"
-                android:textSize="18sp" />
+                android:id="@+id/textView8"
+                android:layout_weight="1"
+                android:textColor="#ffffff"
+                android:textSize="14sp"
+                android:layout_marginBottom="10dp" />
         </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-                <RadioGroup
-                    android:layout_width="match_parent"
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/RadioGroupVersions"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:text="Version 1"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/RadioGroupVersions"
-                    android:orientation="horizontal">
+                    android:id="@+id/radioButton1"
+                    android:layout_weight="1"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:checked="true" />
 
-                    <RadioButton
-                        android:text="Version 1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/radioButton1"
-                        android:layout_weight="1"
-                        android:textColor="#000000"
-                        android:textSize="18sp"
-                        android:checked="true" />
+                <RadioButton
+                    android:text="Version 2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radioButton2"
+                    android:layout_weight="1"
+                    android:textSize="14sp" />
 
-                    <RadioButton
-                        android:text="Version 2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/radioButton2"
-                        android:layout_weight="1"
-                        android:textSize="18sp" />
+                <RadioButton
+                    android:text="Version 3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radioButton3"
+                    android:textSize="14sp"
+                    android:layout_weight="1" />
 
-                    <RadioButton
-                        android:text="Version 3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/radioButton3"
-                        android:textSize="18sp"
-                        android:layout_weight="1" />
+            </RadioGroup>
 
-                </RadioGroup>
+
         </RelativeLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:orientation="horizontal">
-
-                <Button
-                    android:text="Play"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/Simon_button"
-                    android:layout_weight="1"
-                    android:background="#F5F5DC"
-                    android:textColor="#007FFF"
-                    android:textSize="18sp" />
-
-                <Button
-                    android:text="About Game"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/About_button"
-                    android:layout_weight="1"
-                    android:background="#F5F5DC"
-                    android:textColor="#E32636"
-                    android:textSize="18sp" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:weightSum="1">
+            android:weightSum="2">
 
-            <ImageView
+            <Button
+                android:text="Play"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:srcCompat="@drawable/simon_image"
-                android:id="@+id/imageView"
-                android:scaleType="fitXY"
-                android:layout_weight="1.12" />
+                android:layout_height="wrap_content"
+                android:id="@+id/Simon_button"
+                android:layout_weight="1"
+                android:background="#0047AB"
+                android:textColor="#03C03C"
+                android:textSize="36sp"
+                android:fontFamily="cursive" />
+
+            <Button
+                android:text="About"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/About_button"
+                android:layout_weight="1"
+                android:background="#0047AB"
+                android:textColor="#E32636"
+                android:textSize="36sp"
+                android:fontFamily="cursive" />
+
+
         </LinearLayout>
 
     </LinearLayout>
+
 </RelativeLayout>
