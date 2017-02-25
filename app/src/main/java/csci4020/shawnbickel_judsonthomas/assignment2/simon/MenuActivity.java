@@ -72,11 +72,16 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 String message = "<html>" +
-                        "<h1>Simon Game Image</h1>" +
-                        "<h3>Creator: Steve Berry</h3>" +
-                        "<p><b>Link: </b> <a href='https://www.flickr.com/photos/unloveable/2405593748'>Source Website</a><p>" +
-                        "<b>License: </b> CC BY-NC-SA 2.0" + "  " +
-                        "<a href='https://creativecommons.org/licenses/by-nc-sa/2.0/legalcode'>Source Website</a><br>" +
+                        "<h1>Simon Audio Effects</h1>" +
+                        "<h3>Electronic Beep</h3>" +
+                        "<p><b>Link: </b> <a href='http://soundbible.com/1598-Electronic-Chime.html'>Source Website</a></p>" +
+                        "<p><b>License: </b> Public Domain</p>" +
+                        "<h3>Orbit</h3>" +
+                        "<p>Author: Lordomi</p>" +
+                        "<p><b>Link: </b> <a href = 'http://opengameart.org/content/orbit'> Source Website</a></p>" +
+                        "<p><b>License: </b> CC-BY 3.0, CC-BY-SA 3.0</p>" +
+                        "<p><a href = 'https://creativecommons.org/licenses/by/3.0/legalcode'>Licence Website 1</a></p> " +
+                        "<p><a href = 'https://creativecommons.org/licenses/by-sa/3.0/legalcode'>Licence Website 2</a></p> " +
                         "<footer><p>App Developed by Judson Thomas and Shawn Bickel</p></footer>" +
                         "</html>";
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
