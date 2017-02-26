@@ -5,7 +5,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="csci4020.shawnbickel_judsonthomas.assignment2.simon.SimonVersion3"
+    tools:context="csci4020.shawnbickel_judsonthomas.assignment2.simon.SimonVersion1"
     android:background="#000000">
 
     <RelativeLayout
@@ -13,7 +13,8 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:id="@+id/relativelayout">
 
         <Button
             android:text="Pause"
@@ -29,7 +30,7 @@
             android:id="@+id/pause_button"
             android:textColor="#ffffff"
             android:background="#000000"
-            android:textSize="12sp" />
+            android:textSize="18sp" />
 
         <Button
             android:text="Play"
@@ -45,7 +46,7 @@
             android:id="@+id/play_button"
             android:textColor="#ffffff"
             android:background="#000000"
-            android:textSize="12sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:text="SIMON"
@@ -65,10 +66,40 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginLeft="11dp"
-            android:layout_marginStart="11dp"
-            android:id="@+id/textView4"
+            android:id="@+id/textView3"
             android:textColor="#ffffff" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/pause_button"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="28dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="false"
+            android:layout_centerVertical="false"
+            android:layout_centerHorizontal="false">
+
+            <TextView
+                android:text="Score"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView9"
+                android:textColor="#ffffff"
+                android:textSize="20sp" />
+
+            <TextView
+                android:text="000"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/HighScore"
+                android:textColor="#ffffff"
+                android:textSize="20sp" />
+        </LinearLayout>
 
     </RelativeLayout>
 

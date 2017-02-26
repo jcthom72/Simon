@@ -1,8 +1,8 @@
 package csci4020.shawnbickel_judsonthomas.assignment2.simon;
 
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 public class SimonVersion3 extends AppCompatActivity {
