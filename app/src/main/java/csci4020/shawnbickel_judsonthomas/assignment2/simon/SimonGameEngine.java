@@ -4,14 +4,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
 
-public class SimonGameEngine{
-    public enum Button{TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT}
-    /*initialize our array of buttons; used by generateSequence when generating random button values*/
-    private static final Button[] BUTTONS = {Button.TOP_LEFT, Button.TOP_RIGHT, Button.BOTTOM_LEFT, Button.BOTTOM_RIGHT};
-
-    private Queue<Button> sequence;
-    private int round;
-
     private Simon simon;
     public Player player;
 
