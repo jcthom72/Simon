@@ -97,9 +97,10 @@ public class SimonGameEngine{
         Note: the number of buttons in the pattern sequence is determined by
         the round number (round 1 = 1 button, round 2 = 2 buttons, etc.)*/
         private void generateSequence(){
-            int buttonToAdd = random.nextInt(4);
+            int buttonToAdd;
             for(int i = 0; i < round; i++){
-                sequence.add(BUTTONS[buttonToAdd]);
+                buttonToAdd = random.nextInt(4);
+                sequence.add(BUTTONS[random.nextInt(4)]);
             }
         }
     }

@@ -2,9 +2,12 @@ package csci4020.shawnbickel_judsonthomas.assignment2.simon;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by judson on 2/26/2017.
@@ -14,6 +17,9 @@ import android.widget.ImageView;
 public class SimonActivity extends AppCompatActivity{
     protected SimonGameEngine game;
     protected ButtonSequenceTask sequenceAnim;
+    protected FailureButtonSequenceTask failureAnim;
+    protected Handler blingHandler;
+    protected Runnable blingRun;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -23,13 +29,16 @@ public class SimonActivity extends AppCompatActivity{
         game = new SimonGameEngine();
 
         //initialize ButtonSequenceTask for button pattern animation
-        sequenceAnim = new ButtonSequenceTask(this);
+        sequenceAnim = new ButtonSequenceTask();
+        failureAnim = new FailureButtonSequenceTask();
+
+        //initialize bling handler for posting delayed bling message to UI thread
+        blingHandler = new Handler();
     }
 
     protected void gamePressEvent(ImageView buttonImagePressed){
-        blingButton(buttonImagePressed);
-
         if(game.isPlaying()){
+            blingButton(buttonImagePressed, 200);
             game.player.press(imageViewToButton(buttonImagePressed.getId()));
 
             if(!game.isPlaying()){
@@ -48,20 +57,39 @@ public class SimonActivity extends AppCompatActivity{
         }
     }
 
+    protected void updateScoreText(){
+        ((TextView) findViewById(R.id.HighScore)).setText("" + game.player.getScore());
+    }
+
     protected void nextRoundEvent(){
         game.nextRound();
+        updateScoreText();
+
+        //play button sequence
+        if(sequenceAnim == null){
+            sequenceAnim = new ButtonSequenceTask();
+        }
         sequenceAnim.execute();
     }
 
     protected void gameEndEvent(){
         //save high score somewhere
-        //score = game.player.getScore() etc. etc.
+        updateScoreText();
 
         game.endGame();
+        if(failureAnim == null){
+            failureAnim = new FailureButtonSequenceTask();
+        }
+        failureAnim.execute();
     }
 
     protected void gameStartEvent(){
         game.startGame();
+        updateScoreText();
+
+        if(sequenceAnim == null){
+            sequenceAnim = new ButtonSequenceTask();
+        }
         sequenceAnim.execute();
     }
 
@@ -111,37 +139,74 @@ public class SimonActivity extends AppCompatActivity{
     }
 
     //causes the "physical" simon game button to bling (flash and play a sound)
-    final protected void blingButton(ImageView ivButton){
+    final protected void blingButton(final ImageView ivButton, int blingLength){
         //play sound
 
         //flash image
-        try{
-            ivButton.setImageResource(getBlingImageId(ivButton.getId())); //set the image to the "blinged" button
-            Thread.sleep(1000); //make UI thread sleep: button stays flashed for at least 100ms
-        } catch (InterruptedException e){
+        ivButton.setImageResource(getBlingImageId(ivButton.getId())); //set the image to the "blinged" button
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                ivButton.setImageResource(getNormalImageId(ivButton.getId()));
+            }
+        };
+
+        blingHandler.postDelayed(r, blingLength);
+    }
+
+    protected class FailureButtonSequenceTask extends ButtonSequenceTask{
+        FailureButtonSequenceTask(){
+            super();
         }
-        //ivButton.setImageResource(getNormalImageId(ivButton.getId()));
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            SimonGameEngine.Button twirlSequence[] = {SimonGameEngine.Button.TOP_LEFT, SimonGameEngine.Button.TOP_RIGHT,
+                    SimonGameEngine.Button.BOTTOM_RIGHT, SimonGameEngine.Button.BOTTOM_LEFT};
+
+            /*note, unlike our normal sequence task, if this thread is interrupted we do not want it
+            * to re-enter the loop once it resumes; this is because the failure animation task isn't really necessary,
+            * but the pattern sequence animation certainly is*/
+            try{
+                for (int i = 0; i < 12; i++) {
+                    Thread.sleep(200);
+                    publishProgress(twirlSequence[i % twirlSequence.length]);
+                }
+            } catch (InterruptedException e) {
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(SimonGameEngine.Button... progress){
+            ImageView buttonToBling = (ImageView) findViewById(buttonToImageView(progress[0]));
+            blingButton(buttonToBling, 100);
+        }
+
+        @Override
+        protected void onPostExecute(Void result){
+            failureAnim = null;
+            Toast.makeText(SimonActivity.this, "You lose! Hope you had fun though.", Toast.LENGTH_SHORT).show();
+            enableButtons();
+        }
     }
 
     protected class ButtonSequenceTask extends AsyncTask<Void, SimonGameEngine.Button, Void> {
-        SimonActivity activity;
-
-        ButtonSequenceTask(SimonActivity activity){
+        ButtonSequenceTask(){
             super();
-            this.activity = activity;
         }
 
         protected void onPreExecute(){
-            activity.sequenceStartEvent();
+            disableButtons();
         }
 
         protected Void doInBackground(Void... params){
-            for(SimonGameEngine.Button button : activity.game.getPattern()){
+            for(SimonGameEngine.Button button : game.getPattern()){
 			/*even if thread is interrupted, sequence animation will resume
 			once thread is resumed*/
                 try{
-                    publishProgress(button);
                     Thread.sleep(1000); //at least one second of delay between each bling
+                    publishProgress(button);
                 } catch(InterruptedException e){
                 }
             }
@@ -149,26 +214,35 @@ public class SimonActivity extends AppCompatActivity{
         }
 
         protected void onProgressUpdate(SimonGameEngine.Button... progress){
-            ImageView buttonToBling = (ImageView) activity.findViewById(activity.buttonToImageView(progress[0]));
-            activity.blingButton(buttonToBling);
+            ImageView buttonToBling = (ImageView) findViewById(buttonToImageView(progress[0]));
+            blingButton(buttonToBling, 300);
         }
 
         protected void onPostExecute(Void result){
-            activity.sequenceEndEvent();
+            sequenceAnim = null;
+            enableButtons();
+            //start the round
+            game.startRound();
         }
     }
 
-    /*event executed when button sequence animation starts*/
-    final protected void sequenceStartEvent(){
-	/*disable 4 simon buttons, start game button, etc.*/
+    protected void disableButtons(){
+        /*disable 4 simon buttons, start game button, etc.*/
+        int buttonsToDisable[] = {R.id.bottom_right_button, R.id.bottom_left_button,
+                R.id.top_left_button, R.id.top_right_button, R.id.play_button};
 
+        for(int buttonToDisable : buttonsToDisable){
+            findViewById(buttonToDisable).setEnabled(false);
+        }
     }
 
-    /*event executed when button sequence animation ends*/
-    final protected void sequenceEndEvent(){
-	/*re-enable 4 simon buttons, start game button, etc.*/
+    protected void enableButtons(){
+ 	    /*re-enable 4 simon buttons, start game button, etc.*/
+        int buttonsToEnable[] = {R.id.bottom_right_button, R.id.bottom_left_button,
+                R.id.top_left_button, R.id.top_right_button, R.id.play_button};
 
-        //start the round
-        game.startRound();
+        for(int buttonToEnable : buttonsToEnable){
+            findViewById(buttonToEnable).setEnabled(true);
+        }
     }
 }
