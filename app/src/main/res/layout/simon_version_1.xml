@@ -16,48 +16,57 @@
         android:layout_alignParentStart="true"
         android:id="@+id/relativelayout">
 
-        <Button
-            android:text="Pause"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/SimonTevtView"
-            android:layout_alignLeft="@+id/SimonTevtView"
-            android:layout_alignStart="@+id/SimonTevtView"
-            android:layout_marginLeft="44dp"
-            android:layout_marginStart="44dp"
+        <RelativeLayout
+            android:id="@+id/game_text_layout"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:id="@+id/pause_button"
-            android:textColor="#ffffff"
-            android:background="#000000"
-            android:textSize="18sp" />
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:paddingBottom="0dp">
 
-        <Button
-            android:text="Play"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/SimonTevtView"
-            android:layout_alignRight="@+id/SimonTevtView"
-            android:layout_alignEnd="@+id/SimonTevtView"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="50dp"
-            android:layout_marginEnd="50dp"
-            android:id="@+id/play_button"
-            android:textColor="#ffffff"
-            android:background="#000000"
-            android:textSize="18sp" />
+            <Button
+                android:text="Pause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/SimonTevtView"
+                android:layout_alignLeft="@+id/SimonTevtView"
+                android:layout_alignStart="@+id/SimonTevtView"
+                android:layout_marginLeft="44dp"
+                android:layout_marginStart="44dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:id="@+id/pause_button"
+                android:textColor="#ffffff"
+                android:background="#000000"
+                android:textSize="18sp" />
 
-        <TextView
-            android:text="SIMON"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/SimonTevtView"
-            android:layout_centerInParent="true"
-            android:textColor="#ffffff"
-            android:textSize="30sp"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            <Button
+                android:text="Play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/SimonTevtView"
+                android:layout_alignRight="@+id/SimonTevtView"
+                android:layout_alignEnd="@+id/SimonTevtView"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="50dp"
+                android:layout_marginEnd="50dp"
+                android:id="@+id/play_button"
+                android:textColor="#ffffff"
+                android:background="#000000"
+                android:textSize="18sp" />
+
+            <TextView
+                android:text="SIMON"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/SimonTevtView"
+                android:textColor="#ffffff"
+                android:textSize="30sp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
 
         <TextView
             android:text="Version1"
@@ -68,6 +77,63 @@
             android:layout_alignParentStart="true"
             android:id="@+id/textView3"
             android:textColor="#ffffff" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:weightSum="1"
+            android:id="@+id/button_layout">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:weightSum="1"
+                android:layout_weight=".5"
+                android:id="@+id/top_row">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/top_left"
+                    android:id="@+id/top_left_button"
+                    android:layout_weight=".5" />
+
+                <ImageView
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/top_right"
+                    android:id="@+id/top_right_button"
+                    android:layout_weight=".5"
+                    android:layout_width="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight=".5"
+                android:weightSum="1"
+                android:id="@+id/bottom_row">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/bottom_left"
+                    android:id="@+id/bottom_left_button"
+                    android:layout_weight=".5" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/bottom_right"
+                    android:id="@+id/bottom_right_button"
+                    android:layout_weight=".5" />
+            </LinearLayout>
+
+        </LinearLayout>
 
         <LinearLayout
             android:orientation="vertical"
@@ -99,6 +165,7 @@
                 android:id="@+id/HighScore"
                 android:textColor="#ffffff"
                 android:textSize="20sp" />
+
         </LinearLayout>
 
     </RelativeLayout>
