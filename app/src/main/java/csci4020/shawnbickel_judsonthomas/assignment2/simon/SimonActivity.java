@@ -41,11 +41,14 @@ public class SimonActivity extends AppCompatActivity{
     private final String HighScoreV1 = "HighScoreV1.txt";
     private SoundPool soundPool;
     private Set<Integer> sounds; // a set to hold sounds and indicate that sound can be played
+    private int beep;
+    private int orbit;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TextView score = (TextView) findViewById(R.id.HighScore);
+        score = (TextView) findViewById(R.id.HighScore);
         sounds = new HashSet<Integer>();
 
         //initialize game object
@@ -85,6 +88,8 @@ public class SimonActivity extends AppCompatActivity{
                 }
             }
         });
+        beep = soundPool.load(this, R.raw.electronic_beep, 1);
+        orbit = soundPool.load(this, R.raw.orbit, 1);
     }
 
     protected void gamePressEvent(ImageView buttonImagePressed){
@@ -109,11 +114,10 @@ public class SimonActivity extends AppCompatActivity{
     }
 
     protected void updateRoundText(){
-        ((TextView) findViewById(R.id.RoundText)).setText("" + game.player.getRound());
+        ((TextView) findViewById(R.id.RoundText)).setText("" + game.getRound());
     }
 
     protected void updateScoreText(){
-        game.player.setScore();
         ((TextView) findViewById(R.id.HighScore)).setText("" + game.player.getScore());
         int s = game.player.getScore();
         String score = Integer.toString(s);
@@ -155,12 +159,10 @@ public class SimonActivity extends AppCompatActivity{
     }
 
     protected void nextRoundEvent(){
-        game.player.setScore();
-        String sc = returnHighScore();
-        score.setText(sc);
         game.nextRound();
-        updateRoundText();
+        game.player.setScore((game.player.getScore() + 1));
         updateScoreText();
+        updateRoundText();
 
         //play button sequence
         if(sequenceAnim == null){
@@ -172,7 +174,6 @@ public class SimonActivity extends AppCompatActivity{
     protected void gameEndEvent(){
         //save high score somewhere
         updateRoundText();
-        updateScoreText();
 
         game.endGame();
         if(failureAnim == null){
@@ -183,21 +184,11 @@ public class SimonActivity extends AppCompatActivity{
 
     protected void gameStartEvent(){
         game.startGame();
-        TextView score = (TextView) findViewById(R.id.HighScore);
-        // sets the player's score retrieved from file
-        String sc = returnHighScore();
-        score.setText(sc);
-
-        try{
-            int s = Integer.parseInt(sc);
-            game.player.setScore();
-        }catch (NumberFormatException e){
-            updateScoreText();;
-        }
-
-
-        updateRoundText();
+        updateScore();
         updateScoreText();
+        updateRoundText();
+
+
 
         if(sequenceAnim == null){
             sequenceAnim = new ButtonSequenceTask();
@@ -253,10 +244,9 @@ public class SimonActivity extends AppCompatActivity{
     //causes the "physical" simon game button to bling (flash and play a sound)
     final protected void blingButton(final ImageView ivButton, int blingLength){
         // loads sound into memory
-        final int beep = soundPool.load(this, R.raw.electronic_beep, 1);
-        final int orbit = soundPool.load(this, R.raw.orbit, 1);
 
         //play sound
+        /*
         if (blingLength == 300 || blingLength == 200){
             if (sounds.contains(beep)){
                 soundPool.play(beep, 1.0f, 1.0f, 0, 0, 1.0f);
@@ -266,6 +256,7 @@ public class SimonActivity extends AppCompatActivity{
                 soundPool.play(orbit, 1.0f, 1.0f, 0, 0, 1.0f);
             }
         }
+        */
 
         //flash image
         ivButton.setImageResource(getBlingImageId(ivButton.getId())); //set the image to the "blinged" button
@@ -395,5 +386,21 @@ public class SimonActivity extends AppCompatActivity{
 
             sounds.clear();
         }
+    }
+
+    private void updateScore(){
+        TextView score = (TextView) findViewById(R.id.HighScore);
+        // sets the player's score retrieved from file
+        String sc = returnHighScore();
+        //score.setText(sc);
+
+        try{
+            int s = Integer.parseInt(sc);
+            game.player.setScore(s);
+        }catch (NumberFormatException e){
+
+        }
+
+
     }
 }

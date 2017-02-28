@@ -51,7 +51,7 @@ public class SimonVersion2 extends AppCompatActivity {
     }
 
     protected void updateRoundText(){
-        ((TextView) findViewById(R.id.RoundText)).setText("" + game2.player.getRound());
+        ((TextView) findViewById(R.id.RoundText)).setText("" + game2.getRound());
     }
 
     protected void updateScoreText(){
@@ -95,19 +95,7 @@ public class SimonVersion2 extends AppCompatActivity {
 
     protected void gameStartEvent(){
         game2.startGame();
-        TextView score = (TextView) findViewById(R.id.HighScore);
-        // sets the player's score retrieved from file
-        String sc = returnHighScore();
-        score.setText(sc);
-
-        try{
-            int s = Integer.parseInt(sc);
-            game2.player.setScore();
-        }catch (NumberFormatException e){
-            updateScoreText();
-        }
-
-
+        updateScore();
         updateRoundText();
         updateScoreText();
 
@@ -164,5 +152,21 @@ public class SimonVersion2 extends AppCompatActivity {
             playSimonGame.cancel(true);
             playSimonGame = null;
         }
+    }
+
+    private void updateScore(){
+        TextView score = (TextView) findViewById(R.id.HighScore);
+        // sets the player's score retrieved from file
+        String sc = returnHighScore();
+        score.setText(sc);
+
+        try{
+            int s = Integer.parseInt(sc);
+            game2.player.setScore(s);
+        }catch (NumberFormatException e){
+
+        }
+
+
     }
 }
