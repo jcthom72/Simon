@@ -65,6 +65,7 @@ public class SimonActivity extends AppCompatActivity{
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
+    // loads soundPool object soundPool sounds into memory
     protected void onResume() {
         super.onResume();
 
@@ -88,6 +89,8 @@ public class SimonActivity extends AppCompatActivity{
                 }
             }
         });
+
+        // load sounds into memory
         beep = soundPool.load(this, R.raw.electronic_beep, 1);
         orbit = soundPool.load(this, R.raw.orbit, 1);
     }
@@ -113,10 +116,12 @@ public class SimonActivity extends AppCompatActivity{
         }
     }
 
+    // updates the game level the player is on
     protected void updateRoundText(){
         ((TextView) findViewById(R.id.RoundText)).setText("" + game.getRound());
     }
 
+    // updates player's score and sends the value to a file to be stored
     protected void updateScoreText(){
         ((TextView) findViewById(R.id.HighScore)).setText("" + game.player.getScore());
         int s = game.player.getScore();
@@ -159,7 +164,9 @@ public class SimonActivity extends AppCompatActivity{
     }
 
     protected void nextRoundEvent(){
-        game.nextRound();
+        game.nextRound(); // game enters next round of play
+
+        // if player wins, the score is incremented by 1
         game.player.setScore((game.player.getScore() + 1));
         updateScoreText();
         updateRoundText();
@@ -184,7 +191,7 @@ public class SimonActivity extends AppCompatActivity{
 
     protected void gameStartEvent(){
         game.startGame();
-        updateScore();
+        updateScore(); // retrieves the score from the text file
         updateScoreText();
         updateRoundText();
 
@@ -243,10 +250,7 @@ public class SimonActivity extends AppCompatActivity{
 
     //causes the "physical" simon game button to bling (flash and play a sound)
     final protected void blingButton(final ImageView ivButton, int blingLength){
-        // loads sound into memory
-
         //play sound
-        /*
         if (blingLength == 300 || blingLength == 200){
             if (sounds.contains(beep)){
                 soundPool.play(beep, 1.0f, 1.0f, 0, 0, 1.0f);
@@ -256,7 +260,6 @@ public class SimonActivity extends AppCompatActivity{
                 soundPool.play(orbit, 1.0f, 1.0f, 0, 0, 1.0f);
             }
         }
-        */
 
         //flash image
         ivButton.setImageResource(getBlingImageId(ivButton.getId())); //set the image to the "blinged" button
@@ -381,18 +384,17 @@ public class SimonActivity extends AppCompatActivity{
     protected void onPause() {
         super.onPause();
         if (soundPool != null){
-            soundPool.release();
+            soundPool.release(); // releases soundPool from memory and clears the Set
             soundPool = null;
 
             sounds.clear();
         }
     }
 
+    // retrieves the player's score from a file
     private void updateScore(){
-        TextView score = (TextView) findViewById(R.id.HighScore);
         // sets the player's score retrieved from file
         String sc = returnHighScore();
-        //score.setText(sc);
 
         try{
             int s = Integer.parseInt(sc);
