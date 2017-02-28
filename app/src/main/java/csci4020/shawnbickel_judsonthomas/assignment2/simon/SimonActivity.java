@@ -106,9 +106,9 @@ public class SimonActivity extends AppCompatActivity{
         }
     }
 
-    protected void updateScoreText(){
-        ((TextView) findViewById(R.id.HighScore)).setText("" + game.player.getScore());
-        int s = game.player.getScore();
+    protected void updateRoundText(){
+        ((TextView) findViewById(R.id.HighScore)).setText("" + game.player.getRound());
+        int s = game.player.getRound();
         String score = Integer.toString(s);
         saveHighScore(score);
     }
@@ -147,7 +147,7 @@ public class SimonActivity extends AppCompatActivity{
 
     protected void nextRoundEvent(){
         game.nextRound();
-        updateScoreText();
+        updateRoundText();
 
         //play button sequence
         if(sequenceAnim == null){
@@ -158,7 +158,7 @@ public class SimonActivity extends AppCompatActivity{
 
     protected void gameEndEvent(){
         //save high score somewhere
-        updateScoreText();
+        updateRoundText();
 
         game.endGame();
         if(failureAnim == null){
@@ -178,11 +178,11 @@ public class SimonActivity extends AppCompatActivity{
             int s = Integer.parseInt(sc);
             game.player.setScore(s);
         }catch (NumberFormatException e){
-            updateScoreText();
+            updateRoundText();
         }
 
 
-        updateScoreText();
+        updateRoundText();
 
         if(sequenceAnim == null){
             sequenceAnim = new ButtonSequenceTask();

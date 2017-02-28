@@ -106,6 +106,11 @@ public class SimonGameEngine{
     }
 
     class Player{
+        private int score;
+
+        Player(){
+            score = 0;
+        }
         /*player "presses" button "button".*/
         public void press(Button button){
             if(inSession){
@@ -154,12 +159,20 @@ public class SimonGameEngine{
         }
 
         /*returns the player's current score*/
-        public int getScore(){
+        public int getRound(){
             return getRound();
         }
 
-        public void setScore(int r){
+        public void setRound(int r){
             round = r;
+        }
+
+        public void setScore(int score) {
+            this.score = score;
+        }
+
+        public int getScore() {
+            return score;
         }
     }
 }
