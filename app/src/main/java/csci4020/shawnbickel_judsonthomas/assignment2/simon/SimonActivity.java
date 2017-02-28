@@ -32,6 +32,7 @@ import java.util.Set;
 
 //specific simon version activities will inherit from SimonActivity
 public class SimonActivity extends AppCompatActivity{
+    private TextView score;
     protected SimonGameEngine game;
     protected ButtonSequenceTask sequenceAnim;
     protected FailureButtonSequenceTask failureAnim;
@@ -44,6 +45,7 @@ public class SimonActivity extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TextView score = (TextView) findViewById(R.id.HighScore);
         sounds = new HashSet<Integer>();
 
         //initialize game object
@@ -107,8 +109,13 @@ public class SimonActivity extends AppCompatActivity{
     }
 
     protected void updateRoundText(){
-        ((TextView) findViewById(R.id.HighScore)).setText("" + game.player.getRound());
-        int s = game.player.getRound();
+        ((TextView) findViewById(R.id.RoundText)).setText("" + game.player.getRound());
+    }
+
+    protected void updateScoreText(){
+        game.player.setScore();
+        ((TextView) findViewById(R.id.HighScore)).setText("" + game.player.getScore());
+        int s = game.player.getScore();
         String score = Integer.toString(s);
         saveHighScore(score);
     }
@@ -148,8 +155,12 @@ public class SimonActivity extends AppCompatActivity{
     }
 
     protected void nextRoundEvent(){
+        game.player.setScore();
+        String sc = returnHighScore();
+        score.setText(sc);
         game.nextRound();
         updateRoundText();
+        updateScoreText();
 
         //play button sequence
         if(sequenceAnim == null){
@@ -161,6 +172,7 @@ public class SimonActivity extends AppCompatActivity{
     protected void gameEndEvent(){
         //save high score somewhere
         updateRoundText();
+        updateScoreText();
 
         game.endGame();
         if(failureAnim == null){
@@ -178,13 +190,14 @@ public class SimonActivity extends AppCompatActivity{
 
         try{
             int s = Integer.parseInt(sc);
-            game.player.setScore(s);
+            game.player.setScore();
         }catch (NumberFormatException e){
-            updateRoundText();
+            updateScoreText();;
         }
 
 
         updateRoundText();
+        updateScoreText();
 
         if(sequenceAnim == null){
             sequenceAnim = new ButtonSequenceTask();

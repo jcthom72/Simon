@@ -158,19 +158,17 @@ public class SimonGameEngine{
             return false;
         }
 
-        /*returns the player's current score*/
+        /*returns the player's game level*/
         public int getRound(){
             return getRound();
         }
 
-        public void setRound(int r){
-            round = r;
+        // increments player's score
+        public void setScore() {
+            score++;
         }
 
-        public void setScore(int score) {
-            this.score = score;
-        }
-
+        // returns player's score
         public int getScore() {
             return score;
         }

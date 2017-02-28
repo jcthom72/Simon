@@ -50,6 +50,10 @@ public class SimonVersion3 extends AppCompatActivity {
         }
     }
 
+    protected void updateRoundText(){
+        ((TextView) findViewById(R.id.RoundText)).setText("" + game3.player.getRound());
+    }
+
     protected void updateScoreText(){
         ((TextView) findViewById(R.id.HighScore)).setText("" + game3.player.getScore());
         int s = game3.player.getScore();
@@ -98,13 +102,14 @@ public class SimonVersion3 extends AppCompatActivity {
 
         try{
             int s = Integer.parseInt(sc);
-            game3.player.setScore(s);
+            game3.player.setScore();
         }catch (NumberFormatException e){
             updateScoreText();
         }
 
 
         updateScoreText();
+        updateRoundText();
 
         if(sequenceAnim == null){
             //sequenceAnim = new SimonActivity.ButtonSequenceTask();

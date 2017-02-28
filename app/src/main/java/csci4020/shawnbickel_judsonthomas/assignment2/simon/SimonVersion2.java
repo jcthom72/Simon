@@ -50,6 +50,10 @@ public class SimonVersion2 extends AppCompatActivity {
         }
     }
 
+    protected void updateRoundText(){
+        ((TextView) findViewById(R.id.RoundText)).setText("" + game2.player.getRound());
+    }
+
     protected void updateScoreText(){
         ((TextView) findViewById(R.id.HighScore)).setText("" + game2.player.getScore());
         int s = game2.player.getScore();
@@ -98,12 +102,13 @@ public class SimonVersion2 extends AppCompatActivity {
 
         try{
             int s = Integer.parseInt(sc);
-            game2.player.setScore(s);
+            game2.player.setScore();
         }catch (NumberFormatException e){
             updateScoreText();
         }
 
 
+        updateRoundText();
         updateScoreText();
 
         if(sequenceAnim == null){
