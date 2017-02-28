@@ -1,13 +1,30 @@
 package csci4020.shawnbickel_judsonthomas.assignment2.simon;
 
+import android.content.Context;
+import android.media.AudioAttributes;
+import android.media.SoundPool;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.HashSet;
+import java.util.Queue;
+import java.util.Scanner;
+import java.util.Set;
 
 /**
  * Created by judson on 2/26/2017.
@@ -20,10 +37,14 @@ public class SimonActivity extends AppCompatActivity{
     protected FailureButtonSequenceTask failureAnim;
     protected Handler blingHandler;
     protected Runnable blingRun;
+    private final String HighScoreV1 = "HighScoreV1.txt";
+    private SoundPool soundPool;
+    private Set<Integer> sounds; // a set to hold sounds and indicate that sound can be played
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sounds = new HashSet<Integer>();
 
         //initialize game object
         game = new SimonGameEngine();
@@ -34,6 +55,34 @@ public class SimonActivity extends AppCompatActivity{
 
         //initialize bling handler for posting delayed bling message to UI thread
         blingHandler = new Handler();
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        AudioAttributes.Builder audioAttr = new AudioAttributes.Builder();
+        audioAttr.setUsage(AudioAttributes.USAGE_GAME); // sets audio usage as game
+
+        SoundPool.Builder builder = new SoundPool.Builder(); // creates sound
+        builder.setAudioAttributes(audioAttr.build());
+        builder.setMaxStreams(1); // prevents more than 1 stream from playing
+
+        soundPool = builder.build(); // builder assigned to SoundPool object
+
+        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener(){
+
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                if(status == 0){
+                    sounds.add(sampleId); // adds audio to the set
+                }else{
+                    Log.i("SOUNDS", "ERROR can't load sound ");
+                }
+            }
+        });
     }
 
     protected void gamePressEvent(ImageView buttonImagePressed){
@@ -59,6 +108,41 @@ public class SimonActivity extends AppCompatActivity{
 
     protected void updateScoreText(){
         ((TextView) findViewById(R.id.HighScore)).setText("" + game.player.getScore());
+        int s = game.player.getScore();
+        String score = Integer.toString(s);
+        saveHighScore(score);
+    }
+
+    // saves the player's score to a file
+    private void saveHighScore(String score)  {
+        try {
+            FileOutputStream fos = openFileOutput(HighScoreV1, Context.MODE_PRIVATE);
+            OutputStreamWriter osw = new OutputStreamWriter(fos);
+            BufferedWriter bw = new BufferedWriter(osw);
+            PrintWriter pw = new PrintWriter (bw);
+            pw.print(score);
+            pw.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Can't write to file", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    // returns a player's score from a file
+    public String returnHighScore(){
+        String score = "";
+
+        try {
+            FileInputStream fis = openFileInput(HighScoreV1);
+            Scanner s = new Scanner(fis);
+            while(s.hasNext()){
+                score = s.next();
+            }
+            s.close();
+        } catch (FileNotFoundException e) {
+            Log.i("ReadData", "no input file found");
+        }
+        return score;
     }
 
     protected void nextRoundEvent(){
@@ -85,6 +169,19 @@ public class SimonActivity extends AppCompatActivity{
 
     protected void gameStartEvent(){
         game.startGame();
+        TextView score = (TextView) findViewById(R.id.HighScore);
+        // sets the player's score retrieved from file
+        String sc = returnHighScore();
+        score.setText(sc);
+
+        try{
+            int s = Integer.parseInt(sc);
+            game.player.setScore(s);
+        }catch (NumberFormatException e){
+            updateScoreText();
+        }
+
+
         updateScoreText();
 
         if(sequenceAnim == null){
@@ -140,7 +237,20 @@ public class SimonActivity extends AppCompatActivity{
 
     //causes the "physical" simon game button to bling (flash and play a sound)
     final protected void blingButton(final ImageView ivButton, int blingLength){
+        // loads sound into memory
+        final int beep = soundPool.load(this, R.raw.electronic_beep, 1);
+        final int orbit = soundPool.load(this, R.raw.orbit, 1);
+
         //play sound
+        if (blingLength == 300 || blingLength == 200){
+            if (sounds.contains(beep)){
+                soundPool.play(beep, 1.0f, 1.0f, 0, 0, 1.0f);
+            }
+        }else if (blingLength == 100) {
+            if (sounds.contains(orbit)) {
+                soundPool.play(orbit, 1.0f, 1.0f, 0, 0, 1.0f);
+            }
+        }
 
         //flash image
         ivButton.setImageResource(getBlingImageId(ivButton.getId())); //set the image to the "blinged" button
@@ -186,7 +296,7 @@ public class SimonActivity extends AppCompatActivity{
         @Override
         protected void onPostExecute(Void result){
             failureAnim = null;
-            Toast.makeText(SimonActivity.this, "You lose! Hope you had fun though.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SimonActivity.this, "You lose! Hope you had fun thoughh.", Toast.LENGTH_SHORT).show();
             enableButtons();
         }
     }
@@ -201,11 +311,26 @@ public class SimonActivity extends AppCompatActivity{
         }
 
         protected Void doInBackground(Void... params){
-            for(SimonGameEngine.Button button : game.getPattern()){
-			/*even if thread is interrupted, sequence animation will resume
-			once thread is resumed*/
+            Queue<SimonGameEngine.Button> sequence = game.getPattern();
+            SimonGameEngine.Button button;
+            for(int i = sequence.size() - 1; i >= 0; i--){
+                button = (SimonGameEngine.Button) sequence.toArray()[i];
+			    /*even if thread is interrupted, sequence animation will resume
+			    once thread is resumed*/
                 try{
                     Thread.sleep(1000); //at least one second of delay between each bling
+                    //SimonGameEngine.Button swappedButton = null;
+                    /*switch(button){
+                        case TOP_LEFT: swappedButton = SimonGameEngine.Button.BOTTOM_RIGHT;
+                            break;
+                        case TOP_RIGHT: swappedButton = SimonGameEngine.Button.BOTTOM_LEFT;
+                            break;
+                        case BOTTOM_LEFT: swappedButton = SimonGameEngine.Button.TOP_RIGHT;
+                            break;
+                        case BOTTOM_RIGHT: swappedButton = SimonGameEngine.Button.TOP_LEFT;
+                            break;
+                    }*/
+                    //publishProgress(swappedButton);
                     publishProgress(button);
                 } catch(InterruptedException e){
                 }
@@ -243,6 +368,17 @@ public class SimonActivity extends AppCompatActivity{
 
         for(int buttonToEnable : buttonsToEnable){
             findViewById(buttonToEnable).setEnabled(true);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (soundPool != null){
+            soundPool.release();
+            soundPool = null;
+
+            sounds.clear();
         }
     }
 }

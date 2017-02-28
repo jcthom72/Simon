@@ -157,5 +157,9 @@ public class SimonGameEngine{
         public int getScore(){
             return getRound();
         }
+
+        public void setScore(int r){
+            round = r;
+        }
     }
 }
