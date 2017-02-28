@@ -113,6 +113,8 @@ public class SimonActivity extends AppCompatActivity{
         saveHighScore(score);
     }
 
+
+
     // saves the player's score to a file
     private void saveHighScore(String score)  {
         try {

@@ -12,7 +12,7 @@ public class SimonVersion3 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.simon_version_3);
+        setContentView(R.layout.simon_game_layout);
 
         // Initialize Game when user pushes the start button
         findViewById(R.id.play_button).setOnClickListener(new InitializeGame());
