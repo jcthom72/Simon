@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +39,7 @@ public class SimonActivity extends AppCompatActivity{
     protected FailureButtonSequenceTask failureAnim;
     protected Handler blingHandler;
     protected Runnable blingRun;
-    private final String HighScoreV1 = "HighScoreV1.txt";
+    private final String HighScore = "HighScoreV1.txt";
     private SoundPool soundPool;
     private Set<Integer> sounds; // a set to hold sounds and indicate that sound can be played
     private int beep;
@@ -55,11 +56,34 @@ public class SimonActivity extends AppCompatActivity{
         game = new SimonGameEngine();
 
         //initialize ButtonSequenceTask for button pattern animation
-        sequenceAnim = new ButtonSequenceTask();
         failureAnim = new FailureButtonSequenceTask();
 
         //initialize bling handler for posting delayed bling message to UI thread
         blingHandler = new Handler();
+
+        //Initialize layout
+        setContentView(R.layout.simon_game_layout);
+        // Initialize button listeners
+        findViewById(R.id.play_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gameStartEvent();
+            }
+        });
+
+        //initialize simon buttons
+        int[] simonButtonIDs;
+        simonButtonIDs = new int[]{R.id.top_left_button, R.id.top_right_button,
+                R.id.bottom_left_button, R.id.bottom_right_button};
+
+        for(int simonButtonID : simonButtonIDs){
+            findViewById(simonButtonID).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    gamePressEvent((ImageView) view);
+                }
+            });
+        }
 
     }
 
@@ -132,9 +156,9 @@ public class SimonActivity extends AppCompatActivity{
 
 
     // saves the player's score to a file
-    private void saveHighScore(String score)  {
+    public void saveHighScore(String score)  {
         try {
-            FileOutputStream fos = openFileOutput(HighScoreV1, Context.MODE_PRIVATE);
+            FileOutputStream fos = openFileOutput(HighScore, Context.MODE_PRIVATE);
             OutputStreamWriter osw = new OutputStreamWriter(fos);
             BufferedWriter bw = new BufferedWriter(osw);
             PrintWriter pw = new PrintWriter (bw);
@@ -151,7 +175,7 @@ public class SimonActivity extends AppCompatActivity{
         String score = "";
 
         try {
-            FileInputStream fis = openFileInput(HighScoreV1);
+            FileInputStream fis = openFileInput(HighScore);
             Scanner s = new Scanner(fis);
             while(s.hasNext()){
                 score = s.next();
@@ -321,25 +345,11 @@ public class SimonActivity extends AppCompatActivity{
 
         protected Void doInBackground(Void... params){
             Queue<SimonGameEngine.Button> sequence = game.getPattern();
-            SimonGameEngine.Button button;
-            for(int i = sequence.size() - 1; i >= 0; i--){
-                button = (SimonGameEngine.Button) sequence.toArray()[i];
+            for(SimonGameEngine.Button button : sequence){
 			    /*even if thread is interrupted, sequence animation will resume
 			    once thread is resumed*/
                 try{
                     Thread.sleep(1000); //at least one second of delay between each bling
-                    //SimonGameEngine.Button swappedButton = null;
-                    /*switch(button){
-                        case TOP_LEFT: swappedButton = SimonGameEngine.Button.BOTTOM_RIGHT;
-                            break;
-                        case TOP_RIGHT: swappedButton = SimonGameEngine.Button.BOTTOM_LEFT;
-                            break;
-                        case BOTTOM_LEFT: swappedButton = SimonGameEngine.Button.TOP_RIGHT;
-                            break;
-                        case BOTTOM_RIGHT: swappedButton = SimonGameEngine.Button.TOP_LEFT;
-                            break;
-                    }*/
-                    //publishProgress(swappedButton);
                     publishProgress(button);
                 } catch(InterruptedException e){
                 }
