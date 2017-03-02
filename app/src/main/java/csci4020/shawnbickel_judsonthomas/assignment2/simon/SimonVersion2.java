@@ -9,13 +9,12 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class SimonVersion2 extends SimonActivity {
-    private final String HighScore = "HighScoreV2.txt";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sequenceAnim = new v2ButtonSequenceTask();
-
+        HighScore = "HighScoreV2.txt";
         ((TextView) findViewById(R.id.SimonTevtView)).setText("Simon (Reverse)");
     }
 
