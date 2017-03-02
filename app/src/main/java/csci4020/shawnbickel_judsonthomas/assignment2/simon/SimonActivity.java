@@ -348,17 +348,25 @@ public class SimonActivity extends AppCompatActivity{
         protected Void doInBackground(Void... params){
             Queue<SimonGameEngine.Button> sequence = game.getPattern();
             Iterator<SimonGameEngine.Button> sequenceItr = ((LinkedList<SimonGameEngine.Button>) sequence).iterator();
-            SimonGameEngine.Button button;
+            SimonGameEngine.Button button = null;
+            boolean retry = false;
 
             while(sequenceItr.hasNext()){
-                button = sequenceItr.next();
+                if(!retry) {
+                    /*if we do not need to retry to bling the previous button (i.e. if the
+                    * previous button was not interrupted before it blinged) then get the next button;
+                    * otherwise, we will try to bling the same button again*/
+                    button = sequenceItr.next();
+                }
 
 			    /*even if thread is interrupted, sequence animation will resume
 			    once thread is resumed*/
                 try{
                     Thread.sleep(1000); //at least one second of delay between each bling
                     publishProgress(button);
+                    retry = false;
                 } catch(InterruptedException e){
+                    retry = true;
                 }
             }
             return null;
@@ -390,7 +398,7 @@ public class SimonActivity extends AppCompatActivity{
                 R.id.top_left_button, R.id.top_right_button, R.id.play_button};
 
         for(int buttonToDisable : buttonsToDisable){
-            findViewById(buttonToDisable).setEnabled(false);
+            findViewById(buttonToDisable).setClickable(false);
         }
     }
 
@@ -400,7 +408,7 @@ public class SimonActivity extends AppCompatActivity{
                 R.id.top_left_button, R.id.top_right_button, R.id.play_button};
 
         for(int buttonToEnable : buttonsToEnable){
-            findViewById(buttonToEnable).setEnabled(true);
+            findViewById(buttonToEnable).setClickable(true);
         }
     }
 

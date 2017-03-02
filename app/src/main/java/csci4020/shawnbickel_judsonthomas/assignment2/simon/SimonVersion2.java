@@ -16,7 +16,7 @@ public class SimonVersion2 extends SimonActivity {
         super.onCreate(savedInstanceState);
         sequenceAnim = new v2ButtonSequenceTask();
 
-        ((TextView) findViewById(R.id.SimonTevtView)).setText("Simon (v2)");
+        ((TextView) findViewById(R.id.SimonTevtView)).setText("Simon (Reverse)");
     }
 
     @Override
@@ -36,10 +36,16 @@ public class SimonVersion2 extends SimonActivity {
         protected Void doInBackground(Void... params){
             Queue<SimonGameEngine.Button> sequence = game.getPattern();
             Iterator<SimonGameEngine.Button> sequenceItr = ((LinkedList<SimonGameEngine.Button>) sequence).descendingIterator();
-            SimonGameEngine.Button button;
+            SimonGameEngine.Button button = null;
+            boolean retry = false;
 
             while(sequenceItr.hasNext()){
-                button = sequenceItr.next();
+                if(!retry) {
+                    /*if we do not need to retry to bling the previous button (i.e. if the
+                    * previous button was not interrupted before it blinged) then get the next button;
+                    * otherwise, we will try to bling the same button again*/
+                    button = sequenceItr.next();
+                }
 			    /*even if thread is interrupted, sequence animation will resume
 			    once thread is resumed*/
 
@@ -47,7 +53,9 @@ public class SimonVersion2 extends SimonActivity {
                 try{
                     Thread.sleep(1000); //at least one second of delay between each bling
                     publishProgress(button);
+                    retry = false;
                 } catch(InterruptedException e){
+                    retry = true;
                 }
             }
             return null;

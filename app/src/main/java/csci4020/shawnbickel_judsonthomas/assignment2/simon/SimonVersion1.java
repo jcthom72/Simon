@@ -10,6 +10,6 @@ public class SimonVersion1 extends SimonActivity {
         super.onCreate(savedInstanceState);
         sequenceAnim = new ButtonSequenceTask();
 
-        ((TextView) findViewById(R.id.SimonTevtView)).setText("Simon (v1)");
+        ((TextView) findViewById(R.id.SimonTevtView)).setText("Simon (Normal)");
     }
 }
