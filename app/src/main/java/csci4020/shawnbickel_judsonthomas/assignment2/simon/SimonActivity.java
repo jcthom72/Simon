@@ -40,11 +40,13 @@ public class SimonActivity extends AppCompatActivity{
     protected ButtonSequenceTask sequenceAnim;
     protected FailureButtonSequenceTask failureAnim;
     protected Handler blingHandler;
-    protected Runnable blingRun;
-    private final String HighScore = "HighScoreV1.txt";
+    protected String HighScore;
     private SoundPool soundPool;
     private Set<Integer> sounds; // a set to hold sounds and indicate that sound can be played
-    private int beep;
+    private int beepBlue;
+    private int beepGreen;
+    private int beepRed;
+    private int beepYellow;
     private int orbit;
 
 
@@ -66,6 +68,8 @@ public class SimonActivity extends AppCompatActivity{
 
         //initialize bling handler for posting delayed bling message to UI thread
         blingHandler = new Handler();
+
+        HighScore = "HighScoreV1.txt";
 
         // Initialize button listeners
         findViewById(R.id.play_button).setOnClickListener(new View.OnClickListener() {
@@ -119,7 +123,10 @@ public class SimonActivity extends AppCompatActivity{
         });
 
         // load sounds into memory
-        beep = soundPool.load(this, R.raw.electronic_beep, 1);
+        beepBlue = soundPool.load(this, R.raw.electronic_beep_blue, 1);
+        beepRed = soundPool.load(this, R.raw.electronic_beep_red, 1);
+        beepGreen = soundPool.load(this, R.raw.electronic_beep_green, 1);
+        beepYellow = soundPool.load(this, R.raw.electronic_beep_yellow, 1);
         orbit = soundPool.load(this, R.raw.orbit, 1);
     }
 
@@ -277,10 +284,26 @@ public class SimonActivity extends AppCompatActivity{
     //causes the "physical" simon game button to bling (flash and play a sound)
     final protected void blingButton(final ImageView ivButton, int blingLength){
         //play sound
+        int beepSound = 0;
         if (blingLength == 300 || blingLength == 200){
-            if (sounds.contains(beep)){
-                soundPool.play(beep, 1.0f, 1.0f, 0, 0, 1.0f);
+            switch (ivButton.getId()){
+                case R.id.top_left_button:
+                    beepSound = beepGreen;
+                    break;
+                case R.id.top_right_button:
+                    beepSound = beepRed;
+                    break;
+                case R.id.bottom_left_button:
+                    beepSound = beepBlue;
+                    break;
+                case R.id.bottom_right_button:
+                    beepSound = beepYellow;
+                    break;
             }
+            if (sounds.contains(beepSound)){
+                soundPool.play(beepSound, 1.0f, 1.0f, 0, 0, 1.0f);
+            }
+
         }else if (blingLength == 100) {
             if (sounds.contains(orbit)) {
                 soundPool.play(orbit, 1.0f, 1.0f, 0, 0, 1.0f);

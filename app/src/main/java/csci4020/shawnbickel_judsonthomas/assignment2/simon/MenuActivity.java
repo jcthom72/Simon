@@ -77,7 +77,7 @@ public class MenuActivity extends AppCompatActivity {
                         "<p><b>Link: </b> <a href='http://soundbible.com/1598-Electronic-Chime.html'>Source Website</a></p>" +
                         "<p><b>License: </b> Public Domain</p>" +
                         "<h3>Orbit</h3>" +
-                        "<p>Author: Lordomi</p>" +
+                        "<p>Creator: Lordomi</p>" +
                         "<p><b>Link: </b> <a href = 'http://opengameart.org/content/orbit'> Source Website</a></p>" +
                         "<p><b>License: </b> CC-BY 3.0, CC-BY-SA 3.0</p>" +
                         "<p><a href = 'https://creativecommons.org/licenses/by/3.0/legalcode'>Licence Website 1</a></p> " +
