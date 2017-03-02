@@ -1,95 +1,39 @@
 package csci4020.shawnbickel_judsonthomas.assignment2.simon;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import android.support.annotation.Nullable;
 
-public class SimonVersion2 extends AppCompatActivity {
+import java.util.Queue;
 
-    private PlaySimon playSimonGame;
+public class SimonVersion2 extends SimonActivity {
+    private final String HighScore = "HighScoreV2.txt";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.simon_version_2);
-
-        // Initialize Game when user pushes the start button
-        findViewById(R.id.play_button).setOnClickListener(new InitializeGame());
-        findViewById(R.id.pause_button).setOnClickListener(new PauseLevel());
+        sequenceAnim = new v2ButtonSequenceTask();
     }
 
-    class InitializeGame implements View.OnClickListener{
-
-        @Override
-        public void onClick(View view) {
-            /* if an AsyncTask already exists and the task if finished executing, then make the
-                 object null */
-            if (playSimonGame != null && playSimonGame.getStatus() == AsyncTask.Status.FINISHED) {
-                playSimonGame = null;
-            }
-
-            // if AsyncTask does not exist in memory, then the object instantiation creates it
-            if (playSimonGame == null) {
-                playSimonGame = new PlaySimon();
-                playSimonGame.execute();
-            }
-        }
-    }
-
-    class PauseLevel implements View.OnClickListener{
-
-        @Override
-        public void onClick(View view) {
-            // implement logic to save the state of the level
-        }
-    }
-
-    // PlaySimon class includes methods to execute threads
-    class PlaySimon extends AsyncTask<Void,Void,Void>{
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
+    protected class v2ButtonSequenceTask extends ButtonSequenceTask{
+        public v2ButtonSequenceTask(){
+            super();
         }
 
-        // doInBackground is the background thread
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-                // pass View from background thread to main UI method onProgressUpdate()
-                publishProgress(voids);
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        protected Void doInBackground(Void... params){
+            Queue<SimonGameEngine.Button> sequence = game.getPattern();
+            SimonGameEngine.Button[] sequenceArr = (SimonGameEngine.Button[]) sequence.toArray();
+            SimonGameEngine.Button button;
+            for(int i = sequence.size() - 1; i >= 0; i--){
+                button = sequenceArr[i];
+			    /*even if thread is interrupted, sequence animation will resume
+			    once thread is resumed*/
+                try{
+                    Thread.sleep(1000); //at least one second of delay between each bling
+                    publishProgress(button);
+                } catch(InterruptedException e){
+                }
             }
             return null;
-        }
-
-        // updates main UI
-        @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-        }
-
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-        }
-    }
-
-    // onPause destroys the AsyncTask
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (playSimonGame != null) {
-            playSimonGame.cancel(true);
-            playSimonGame = null;
         }
     }
 }
