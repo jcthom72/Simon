@@ -28,6 +28,65 @@
             android:id="@+id/RoundText"
             android:textSize="20sp"
             android:textColor="#ffffff" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:weightSum="1"
+        android:id="@+id/button_layout">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="1"
+            android:layout_weight=".5"
+            android:id="@+id/top_row">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/top_left"
+                android:id="@+id/top_left_button"
+                android:layout_weight=".5" />
+
+            <ImageView
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/top_right"
+                android:id="@+id/top_right_button"
+                android:layout_weight=".5"
+                android:layout_width="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".5"
+            android:weightSum="1"
+            android:id="@+id/bottom_row">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/bottom_left"
+                android:id="@+id/bottom_left_button"
+                android:layout_weight=".5" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/bottom_right"
+                android:id="@+id/bottom_right_button"
+                android:layout_weight=".5" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <RelativeLayout
@@ -37,64 +96,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/relativelayout">
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:weightSum="1"
-            android:id="@+id/button_layout">
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:weightSum="1"
-                android:layout_weight=".5"
-                android:id="@+id/top_row">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/top_left"
-                    android:id="@+id/top_left_button"
-                    android:layout_weight=".5" />
-
-                <ImageView
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/top_right"
-                    android:id="@+id/top_right_button"
-                    android:layout_weight=".5"
-                    android:layout_width="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight=".5"
-                android:weightSum="1"
-                android:id="@+id/bottom_row">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/bottom_left"
-                    android:id="@+id/bottom_left_button"
-                    android:layout_weight=".5" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/bottom_right"
-                    android:id="@+id/bottom_right_button"
-                    android:layout_weight=".5" />
-
-            </LinearLayout>
-
-        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/game_text_layout"
@@ -111,11 +112,11 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/play_button"
                 android:textColor="#ffffff"
-                android:background="#000000"
                 android:textSize="18sp"
                 android:layout_below="@+id/SimonTevtView"
-                android:layout_alignRight="@+id/SimonTevtView"
-                android:layout_alignEnd="@+id/SimonTevtView" />
+                android:background="#00000000"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="false" />
 
             <TextView
                 android:text="SIMON"
@@ -126,7 +127,8 @@
                 android:textSize="30sp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerInParent="true"
-                android:layout_centerVertical="true" />
+                android:layout_centerVertical="true"
+                android:background="#00000000" />
 
         </RelativeLayout>
 

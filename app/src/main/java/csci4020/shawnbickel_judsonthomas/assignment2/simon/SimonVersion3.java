@@ -2,7 +2,10 @@ package csci4020.shawnbickel_judsonthomas.assignment2.simon;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.widget.TextView;
 
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Queue;
 
 public class SimonVersion3 extends SimonActivity {
@@ -12,6 +15,16 @@ public class SimonVersion3 extends SimonActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sequenceAnim = new v3ButtonSequenceTask();
+
+        ((TextView) findViewById(R.id.SimonTevtView)).setText("Simon (v3)");
+    }
+
+    @Override
+    protected void playSequenceAnimation(){
+        if (sequenceAnim == null) {
+            sequenceAnim = new v3ButtonSequenceTask();
+        }
+        sequenceAnim.execute();
     }
 
     protected class v3ButtonSequenceTask extends ButtonSequenceTask{
@@ -19,27 +32,29 @@ public class SimonVersion3 extends SimonActivity {
             super();
         }
 
+        @Override
         protected Void doInBackground(Void... params){
             Queue<SimonGameEngine.Button> sequence = game.getPattern();
-            SimonGameEngine.Button[] sequenceArr = (SimonGameEngine.Button[]) sequence.toArray();
+            Iterator<SimonGameEngine.Button> sequenceItr = ((LinkedList<SimonGameEngine.Button>) sequence).iterator();
             SimonGameEngine.Button button;
             SimonGameEngine.Button swappedButton = null;
 
-
-            for(int i = 0; i < sequence.size(); i++){
-                button = sequenceArr[i];
+            while(sequenceItr.hasNext()){
+                button = sequenceItr.next();
 			    /*even if thread is interrupted, sequence animation will resume
 			    once thread is resumed*/
-                    switch(button){
-                        case TOP_LEFT: swappedButton = SimonGameEngine.Button.BOTTOM_RIGHT;
-                            break;
-                        case TOP_RIGHT: swappedButton = SimonGameEngine.Button.BOTTOM_LEFT;
-                            break;
-                        case BOTTOM_LEFT: swappedButton = SimonGameEngine.Button.TOP_RIGHT;
-                            break;
-                        case BOTTOM_RIGHT: swappedButton = SimonGameEngine.Button.TOP_LEFT;
-                            break;
-                    }
+
+                /*output the diagonal/reflected buttons*/
+                switch(button){
+                    case TOP_LEFT: swappedButton = SimonGameEngine.Button.BOTTOM_RIGHT;
+                        break;
+                    case TOP_RIGHT: swappedButton = SimonGameEngine.Button.BOTTOM_LEFT;
+                        break;
+                    case BOTTOM_LEFT: swappedButton = SimonGameEngine.Button.TOP_RIGHT;
+                        break;
+                    case BOTTOM_RIGHT: swappedButton = SimonGameEngine.Button.TOP_LEFT;
+                        break;
+                }
                 publishProgress(swappedButton);
                 try{
                     Thread.sleep(1000); //at least one second of delay between each bling

@@ -23,6 +23,8 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 import java.util.Set;
@@ -49,6 +51,10 @@ public class SimonActivity extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Initialize layout
+        setContentView(R.layout.simon_game_layout);
+
         score = (TextView) findViewById(R.id.HighScore);
         sounds = new HashSet<Integer>();
 
@@ -61,8 +67,6 @@ public class SimonActivity extends AppCompatActivity{
         //initialize bling handler for posting delayed bling message to UI thread
         blingHandler = new Handler();
 
-        //Initialize layout
-        setContentView(R.layout.simon_game_layout);
         // Initialize button listeners
         findViewById(R.id.play_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,10 +200,7 @@ public class SimonActivity extends AppCompatActivity{
         updateRoundText();
 
         //play button sequence
-        if(sequenceAnim == null){
-            sequenceAnim = new ButtonSequenceTask();
-        }
-        sequenceAnim.execute();
+        playSequenceAnimation();
     }
 
     protected void gameEndEvent(){
@@ -214,17 +215,18 @@ public class SimonActivity extends AppCompatActivity{
     }
 
     protected void gameStartEvent(){
-        game.startGame();
-        updateScore(); // retrieves the score from the text file
-        updateScoreText();
-        updateRoundText();
+        if(!game.hasStarted()) {
+            game.startGame();
+            updateScore(); // retrieves the score from the text file
+            updateScoreText();
+            updateRoundText();
 
-
-
-        if(sequenceAnim == null){
-            sequenceAnim = new ButtonSequenceTask();
+            playSequenceAnimation();
         }
-        sequenceAnim.execute();
+
+        else{
+            Toast.makeText(SimonActivity.this, "A game is already started!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /*function to map ImageViews for buttons to their corresponding button enum value;
@@ -329,7 +331,7 @@ public class SimonActivity extends AppCompatActivity{
         @Override
         protected void onPostExecute(Void result){
             failureAnim = null;
-            Toast.makeText(SimonActivity.this, "You lose! Hope you had fun thoughh.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SimonActivity.this, "You lose! Hope you had fun though.", Toast.LENGTH_SHORT).show();
             enableButtons();
         }
     }
@@ -345,7 +347,12 @@ public class SimonActivity extends AppCompatActivity{
 
         protected Void doInBackground(Void... params){
             Queue<SimonGameEngine.Button> sequence = game.getPattern();
-            for(SimonGameEngine.Button button : sequence){
+            Iterator<SimonGameEngine.Button> sequenceItr = ((LinkedList<SimonGameEngine.Button>) sequence).iterator();
+            SimonGameEngine.Button button;
+
+            while(sequenceItr.hasNext()){
+                button = sequenceItr.next();
+
 			    /*even if thread is interrupted, sequence animation will resume
 			    once thread is resumed*/
                 try{
@@ -368,6 +375,13 @@ public class SimonActivity extends AppCompatActivity{
             //start the round
             game.startRound();
         }
+    }
+
+    protected void playSequenceAnimation(){
+        if (sequenceAnim == null) {
+            sequenceAnim = new ButtonSequenceTask();
+        }
+        sequenceAnim.execute();
     }
 
     protected void disableButtons(){
