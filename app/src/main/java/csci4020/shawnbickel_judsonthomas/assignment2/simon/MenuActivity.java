@@ -82,6 +82,10 @@ public class MenuActivity extends AppCompatActivity {
                         "<p><b>License: </b> CC-BY 3.0, CC-BY-SA 3.0</p>" +
                         "<p><a href = 'https://creativecommons.org/licenses/by/3.0/legalcode'>Licence Website 1</a></p> " +
                         "<p><a href = 'https://creativecommons.org/licenses/by-sa/3.0/legalcode'>Licence Website 2</a></p> " +
+                        "<h1>Wood Texture Image</h1>" +
+                        "<p>Taken from <a href = 'https://www.toptal.com/designers/subtlepatterns/faq/'>Subtle Patterns</a></p>" +
+                        "<p>Created by Omar Alvarado</p>" +
+                        "<p><b>License: </b>CC-BY-SA 3.0</p>" +
                         "<footer><p>App Developed by Judson Thomas and Shawn Bickel</p></footer>" +
                         "</html>";
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());

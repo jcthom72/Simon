@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Simon</string>
-    <string name="GameDescription">Game Versions: \n• Version 1 -- \'Simon Says\' -- normal version\n• Version 2 -- Player(s) add 1 to the pattern each turn\n• Version 3 -- Two or more players choose their own color</string>
+    <string name="GameDescription">Game Versions: \n• Version 1 (Normal Mode): -- Memorize and repeat the displayed pattern as it appears.\n• Version 2 (Reverse Mode): Pattern is displayed in reverse order!\n• Version 3 (Opposite mode): The correct button to click is across from the displayed button!</string>
 </resources>

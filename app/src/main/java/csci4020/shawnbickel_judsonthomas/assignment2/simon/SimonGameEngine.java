@@ -114,8 +114,9 @@ public class SimonGameEngine{
         /*player "presses" button "button".*/
         public void press(Button button){
             if(inSession){
-                if(button == sequence.remove()){
-                    //correct guess
+                if(button == sequence.peek()){
+                    //correct guess, remove the top element
+                    sequence.remove();
                     if(sequence.isEmpty()){
                         //end round (player won)
                         inSession = false;
